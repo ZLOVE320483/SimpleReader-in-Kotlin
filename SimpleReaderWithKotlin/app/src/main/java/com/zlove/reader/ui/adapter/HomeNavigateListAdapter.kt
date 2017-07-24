@@ -13,16 +13,18 @@ import com.zlove.reader.data.NavigateEntity
 /**
  * Created by zlove on 2017/7/15.
  */
-class HomeNavigateListAdapter(context: Context, list: MutableList<NavigateEntity>?) : RecyclerView.Adapter<HomeNavigateListAdapter.NavigateViewHolder>() {
+class HomeNavigateListAdapter(context: Context, list: MutableList<NavigateEntity>?, listener: OnItemClickListener) : RecyclerView.Adapter<HomeNavigateListAdapter.NavigateViewHolder>() {
 
     var mContext: Context? = null
     var list: MutableList<NavigateEntity>? = null
     var mInflate: LayoutInflater? = null
+    var mListener: OnItemClickListener? = null
 
     init {
         this.mContext = context
         this.list = list
         this.mInflate = LayoutInflater.from(mContext)
+        this.mListener = listener
     }
 
 
@@ -38,6 +40,9 @@ class HomeNavigateListAdapter(context: Context, list: MutableList<NavigateEntity
         var entity = list?.get(position)
         holder?.itemIcon?.setImageResource(entity?.iconResId!!)
         holder?.itemName?.text = entity?.name
+        holder?.itemView?.setOnClickListener {
+            mListener?.onItemClick(position)
+        }
     }
 
     class NavigateViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
@@ -48,5 +53,9 @@ class HomeNavigateListAdapter(context: Context, list: MutableList<NavigateEntity
             itemIcon = itemView?.findViewById(R.id.list_item_navigation_icon) as ImageView
             itemName = itemView?.findViewById(R.id.list_item_navigation_name) as TextView
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
     }
 }
